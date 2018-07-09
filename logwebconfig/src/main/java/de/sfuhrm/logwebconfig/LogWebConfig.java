@@ -55,8 +55,10 @@ public final class LogWebConfig {
         try {
             singleton = new Server(host, port);
         } catch (IOException e) {
-            System.err.println("logwebconfig: Got IO exception, probably the TCP/IP port "+port+" is already taken.");
-            System.err.println("              Will continue ignoring this error. The service is not available.");
+            System.err.println("logwebconfig: Got IO exception, probably the " +
+                    "TCP/IP port " + port + " is already taken.");
+            System.err.println("              Will continue ignoring this" +
+                    " error. The service is not available.");
         }
     }
 }
