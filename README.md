@@ -89,6 +89,17 @@ This can be used to restrict the accessibility of the configuration from outside
 might be a security risk because you can put the root logging level of your application to debug.
 * **LOGWEBCONFIG_ENABLE**: Whether to enable the server. Defaults to true.
 
+Example for listening on all interface addresses on port 54321:
+
+---------------------------------------
+
+```bash
+java -DLOGWEBCONFIG_PORT=54321 -DLOGWEBCONFIG_HOST=0.0.0.0 -jar myjar.jar ...
+```
+
+---------------------------------------
+
+
 ## Run time: Configuring log4j2
 
 Log4j2 is configured by simply issueing PUT requests with the logger seen as a
