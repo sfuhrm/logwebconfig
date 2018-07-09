@@ -4,6 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+
 import static org.junit.Assert.*;
 
 /**
@@ -18,6 +22,16 @@ public class LogWebConfigTest {
     @Before
     public void shutdown() {
         LogWebConfig.stop();
+    }
+
+    @Test
+    public void startWithPortBlocked() throws IOException {
+        assertNull(singleton());
+        System.setProperty("LOGWEBCONFIG_PORT", "9999");
+        ServerSocket socket = new ServerSocket(9999);
+        LogWebConfig.start();
+        assertNull(singleton());
+        socket.close();
     }
 
     @Test
