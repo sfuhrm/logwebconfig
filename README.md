@@ -63,11 +63,9 @@ resource and the log level as a request parameter.
 Example for setting the root logger level:
 
 ---------------------------------------
-
 ```
 curl -X PUT -d WARN http://localhost:19293/log4j2//level
 ```
-
 ---------------------------------------
 
 Example for setting the logger level for class 'com.company.my.Class':
@@ -76,7 +74,6 @@ Example for setting the logger level for class 'com.company.my.Class':
 ```
 curl -X PUT -d WARN http://localhost:19293/log4j2/com.company.my.Class/level
 ```
-
 ---------------------------------------
 
 Example for getting the root logger level:
@@ -86,7 +83,6 @@ Example for getting the root logger level:
 curl -X GET  http://localhost:19293/log4j2//level
 ERROR
 ```
-
 ---------------------------------------
 
 ## Versions
