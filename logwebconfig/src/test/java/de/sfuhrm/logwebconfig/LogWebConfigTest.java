@@ -35,6 +35,14 @@ public class LogWebConfigTest {
     }
 
     @Test
+    public void startWithDisabled() throws IOException {
+        assertNull(singleton());
+        System.setProperty("LOGWEBCONFIG_ENABLE", "false");
+        LogWebConfig.start();
+        assertNull(singleton());
+    }
+
+    @Test
     public void startOnce() {
         assertNull(singleton());
         LogWebConfig.start();
