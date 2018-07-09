@@ -17,7 +17,7 @@ following Apache Maven dependency:
 <dependency>
     <groupId>de.sfuhrm</groupId>
     <artifactId>logwebconfig</artifactId>
-    <version>0.0.3</version>
+    <version>0.7.0</version>
 </dependency>
 ```
 
