@@ -14,6 +14,7 @@ The library comes handy for the following scenarios:
 * Non-JEE application. JEE servers usually have frontends for configuring the log levels.
 * Applications of which you control the source.
 * Long-running server application. 
+* Java 8+ application runtime.
 
 #### Features
 
