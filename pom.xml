@@ -7,10 +7,11 @@
     <name>Log Web Config Parent</name>
     <version>0.0.2-SNAPSHOT</version>
     <description>Log Web Config Parent POM</description>
-    <url>https://github.com/sfuhrm/sudoku</url>
+    <url>https://github.com/sfuhrm/logwebconfig</url>
     <scm>
-        <url>https://github.com/sfuhrm/sudoku</url>
-        <connection>scm:git:https://github.com/sfuhrm/logwebconfig.git</connection>
+        <url>https://github.com/sfuhrm/logwebconfig</url>
+        <connection>scm:git:git@github.com/sfuhrm/logwebconfig.git</connection>
+        <developerConnection>scm:git:git@github.com/sfuhrm/logwebconfig.git</developerConnection>
     </scm>
     <licenses>
         <license>
