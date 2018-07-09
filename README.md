@@ -79,6 +79,16 @@ curl -X PUT -d WARN http://localhost:19293/log4j2/com.company.my.Class/level
 
 ---------------------------------------
 
+Example for getting the root logger level:
+
+---------------------------------------
+```
+curl -X GET  http://localhost:19293/log4j2//level
+ERROR
+```
+
+---------------------------------------
+
 ## Versions
 
 The version numbers are chosen according to the
