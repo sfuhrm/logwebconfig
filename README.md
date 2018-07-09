@@ -1,6 +1,7 @@
 Log Web Config
 ===================
 ![Travis CI Status](https://travis-ci.org/sfuhrm/logwebconfig.svg?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3d9b5025bb484534b9daab2fc5f3da73)](https://www.codacy.com/app/sfuhrm/logwebconfig?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sfuhrm/logwebconfig&amp;utm_campaign=Badge_Grade)
 [![Coverage Status](https://coveralls.io/repos/github/sfuhrm/logwebconfig/badge.svg)](https://coveralls.io/github/sfuhrm/logwebconfig) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig) 
 
