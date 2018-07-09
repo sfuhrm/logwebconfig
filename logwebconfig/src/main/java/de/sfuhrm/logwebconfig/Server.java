@@ -5,6 +5,8 @@ import fi.iki.elonen.NanoHTTPD;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** HTTP server for handling RESTy requests and passing them on to log4j2.
  * */
@@ -53,11 +55,27 @@ final class Server extends NanoHTTPD {
      *  */
     private LogConfigurator.Resource getResource(
             final IHTTPSession session) throws ServerException {
-        String logger = session.getUri();
-        if (logger.startsWith("/")) {
-            logger = logger.substring(1);
+        Pattern pattern = Pattern.compile("/*(log4j2)/([^/]*)/level");
+        Matcher matcher = pattern.matcher(session.getUri());
+        if (!matcher.matches()) {
+            throw new ServerException(
+                    Response.Status.BAD_REQUEST,
+                    "URI illegal: " + session.getUri());
         }
-        LogConfigurator logConfigurator = new Log4j2Configurator();
+
+        String logFramework = matcher.group(1);
+        String logger = matcher.group(2);
+
+        LogConfigurator logConfigurator;
+        switch (logFramework) {
+            case "log4j2":
+                logConfigurator = new Log4j2Configurator();
+                break;
+            default:
+                throw new ServerException(
+                        Response.Status.BAD_REQUEST,
+                        "Unknown framework " + logFramework);
+        }
         Optional<LogConfigurator.Resource> resource =
                 logConfigurator.findResource(logger);
         if (!resource.isPresent()) {

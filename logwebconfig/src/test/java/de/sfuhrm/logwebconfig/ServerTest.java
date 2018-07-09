@@ -48,14 +48,14 @@ public class ServerTest {
 
     @Test
     public void get() {
-        Response r = serviceTarget.path("/").request().get();
+        Response r = serviceTarget.path("/log4j2//level").request().get();
         assertEquals(Response.Status.METHOD_NOT_ALLOWED.getStatusCode(), r.getStatus());
     }
 
     @Test
     public void putWithoutLevel() {
         Response r = serviceTarget
-                .path("/")
+                .path("/log4j2//level")
                 .request()
                 .put(Entity.entity("", MediaType.TEXT_PLAIN_TYPE));
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), r.getStatus());
@@ -63,7 +63,7 @@ public class ServerTest {
 
     @Test
     public void putWithIllegalLevel() {
-        Response r = serviceTarget.path("/")
+        Response r = serviceTarget.path("/log4j2//level")
                 .queryParam(Server.PARAM_LEVEL, "Schnittlauch")
                 .request()
                 .put(Entity.entity("", MediaType.TEXT_PLAIN_TYPE));
@@ -77,7 +77,7 @@ public class ServerTest {
         PowerMockito.doNothing().when(Configurator.class, "setRootLevel", Level.DEBUG);
 
         Response r = serviceTarget
-                .path("/")
+                .path("/log4j2//level")
                 .queryParam(Server.PARAM_LEVEL, "DEBUG")
                 .request()
                 .put(Entity.entity("", MediaType.TEXT_PLAIN_TYPE));
@@ -95,7 +95,7 @@ public class ServerTest {
         PowerMockito.doNothing().when(Configurator.class, "setLevel", "", Level.ERROR);
 
         Response r = serviceTarget
-                .path(logger)
+                .path("log4j2").path(logger).path("level")
                 .queryParam(Server.PARAM_LEVEL, "ERROR")
                 .request()
                 .put(Entity.entity("", MediaType.TEXT_PLAIN_TYPE));

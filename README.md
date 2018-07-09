@@ -65,7 +65,7 @@ Example for setting the root logger level:
 ---------------------------------------
 
 ```
-curl -X PUT http://localhost:19293/?level=WARN
+curl -X PUT http://localhost:19293/log4j2//level?level=WARN
 ```
 
 ---------------------------------------
@@ -74,7 +74,7 @@ Example for setting the logger level for class 'com.company.my.Class':
 
 ---------------------------------------
 ```
-curl -X PUT http://localhost:19293/com.company.my.Class?level=WARN
+curl -X PUT http://localhost:19293/log4j2/com.company.my.Class/level?level=WARN
 ```
 
 ---------------------------------------
