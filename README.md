@@ -93,7 +93,7 @@ Example for listening on all interface addresses on port 54321:
 
 ---------------------------------------
 
-```bash
+```Shell
 java -DLOGWEBCONFIG_PORT=54321 -DLOGWEBCONFIG_HOST=0.0.0.0 -jar myjar.jar ...
 ```
 
@@ -108,7 +108,7 @@ resource and the log level as a request parameter.
 Example for setting the root logger level:
 
 ---------------------------------------
-```
+```Shell
 curl -X PUT -d WARN http://localhost:19293/log4j2//level
 ```
 ---------------------------------------
@@ -116,7 +116,7 @@ curl -X PUT -d WARN http://localhost:19293/log4j2//level
 Example for setting the logger level for class 'com.company.my.Class':
 
 ---------------------------------------
-```
+```Shell
 curl -X PUT -d WARN http://localhost:19293/log4j2/com.company.my.Class/level
 ```
 ---------------------------------------
@@ -124,7 +124,7 @@ curl -X PUT -d WARN http://localhost:19293/log4j2/com.company.my.Class/level
 Example for getting the root logger level:
 
 ---------------------------------------
-```
+```Shell
 curl -X GET  http://localhost:19293/log4j2//level
 ERROR
 ```
