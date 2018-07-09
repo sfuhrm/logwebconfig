@@ -12,9 +12,6 @@ import java.util.regex.Pattern;
  * */
 final class Server extends NanoHTTPD {
 
-    /** The request parameter name for the log level to configure. */
-    static final String PARAM_LEVEL = "level";
-
     /** Constructs a new server and starts it.
      * @param hostname the host name to listen to, or {@code null}
      *                 for listen to all addresses.

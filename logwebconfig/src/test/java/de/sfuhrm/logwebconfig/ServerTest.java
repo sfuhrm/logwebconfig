@@ -92,9 +92,8 @@ public class ServerTest {
     @Test
     public void putWithIllegalLevel() {
         Response r = serviceTarget.path("/log4j2//level")
-                .queryParam(Server.PARAM_LEVEL, "Schnittlauch")
                 .request()
-                .put(Entity.entity("", MediaType.TEXT_PLAIN_TYPE));
+                .put(Entity.entity("Schnitlauch", MediaType.TEXT_PLAIN_TYPE));
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), r.getStatus());
     }
 
