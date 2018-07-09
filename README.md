@@ -61,6 +61,7 @@ Log4j2 is configured by simply issueing PUT requests with the logger seen as a
 resource and the log level as a request parameter.
 
 Example for setting the root logger level:
+
 ---------------------------------------
 
 ```
@@ -70,8 +71,8 @@ curl -X PUT http://localhost:19293/?level=WARN
 ---------------------------------------
 
 Example for setting the logger level for class 'com.company.my.Class':
----------------------------------------
 
+---------------------------------------
 ```
 curl -X PUT http://localhost:19293/com.company.my.Class?level=WARN
 ```
