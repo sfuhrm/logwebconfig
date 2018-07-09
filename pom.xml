@@ -9,10 +9,9 @@
     <url>https://github.com/sfuhrm/logwebconfig</url>
     <scm>
         <url>https://github.com/sfuhrm/logwebconfig</url>
-        <connection>scm:git:git@github.com/sfuhrm/logwebconfig.git</connection>
+        <connection>scm:git:git://github.com/sfuhrm/logwebconfig.git</connection>
         <developerConnection>scm:git:git@github.com/sfuhrm/logwebconfig.git</developerConnection>
-      <tag>v0.0.2</tag>
-  </scm>
+    </scm>
     <licenses>
         <license>
             <name>Apache License 2.0</name>
