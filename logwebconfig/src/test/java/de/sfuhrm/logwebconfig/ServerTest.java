@@ -1,6 +1,8 @@
 package de.sfuhrm.logwebconfig;
 
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +26,7 @@ import static org.junit.Assert.*;
  * Test for the {@link Server} class.
  * */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest( Configurator.class )
+@PrepareForTest( { Configurator.class, LogManager.class } )
 public class ServerTest {
 
     private Server server;
@@ -48,8 +50,14 @@ public class ServerTest {
 
     @Test
     public void get() {
+        PowerMockito.mockStatic(LogManager.class);
+        Logger rootLogger = PowerMockito.mock(Logger.class);
+        PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
+        PowerMockito.when(LogManager.getRootLogger()).thenReturn(rootLogger);
+
         Response r = serviceTarget.path("/log4j2//level").request().get();
-        assertEquals(Response.Status.METHOD_NOT_ALLOWED.getStatusCode(), r.getStatus());
+        String level = r.readEntity(String.class);
+        assertEquals("ALL", level);
     }
 
     @Test

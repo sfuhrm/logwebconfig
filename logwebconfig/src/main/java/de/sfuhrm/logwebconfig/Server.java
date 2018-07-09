@@ -30,9 +30,16 @@ final class Server extends NanoHTTPD {
     public Response serve(final IHTTPSession session) {
         try {
             Method method = session.getMethod();
+            LogConfigurator.Resource resource = getResource(session);
             switch (method) {
+                case GET:
+                    String level = resource.read();
+                    return newFixedLengthResponse(
+                            Response.Status.OK,
+                            MIME_PLAINTEXT,
+                            level);
                 case PUT:
-                    configure(session);
+                    configure(session, resource);
                     break;
                 default:
                     throw new ServerException(
@@ -87,20 +94,18 @@ final class Server extends NanoHTTPD {
 
     /** Configures a logger based on the data in the request.
      * @param session the session to take the parameters from.
+     * @param resource the log resource to manipulate.
      * @throws ServerException if the request is malformed.
      * */
-    private void configure(final IHTTPSession session)
+    private void configure(final IHTTPSession session,
+                           final LogConfigurator.Resource resource)
             throws ServerException {
-        String logger = session.getUri();
         Map<String, String> params = session.getParms();
         String levelString = params.get(PARAM_LEVEL);
         if (levelString == null) {
             throw new ServerException(Response.Status.BAD_REQUEST,
                     "Parameter '" + PARAM_LEVEL + "' is missing");
         }
-
-        LogConfigurator.Resource resource =
-                getResource(session);
 
         try {
                 resource.update(levelString);
