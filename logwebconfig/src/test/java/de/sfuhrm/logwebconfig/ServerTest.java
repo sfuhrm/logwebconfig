@@ -49,6 +49,15 @@ public class ServerTest {
     }
 
     @Test
+    public void post() {
+        Response r = serviceTarget
+                .path("/log4j2//level")
+                .request()
+                .post(Entity.entity("", MediaType.TEXT_PLAIN_TYPE));
+        assertEquals(Response.Status.METHOD_NOT_ALLOWED.getStatusCode(), r.getStatus());
+    }
+
+    @Test
     public void get() {
         PowerMockito.mockStatic(LogManager.class);
         Logger rootLogger = PowerMockito.mock(Logger.class);
@@ -58,6 +67,17 @@ public class ServerTest {
         Response r = serviceTarget.path("/log4j2//level").request().get();
         String level = r.readEntity(String.class);
         assertEquals("ALL", level);
+    }
+
+    @Test
+    public void getWithMalformedUri() {
+        PowerMockito.mockStatic(LogManager.class);
+        Logger rootLogger = PowerMockito.mock(Logger.class);
+        PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
+        PowerMockito.when(LogManager.getRootLogger()).thenReturn(rootLogger);
+
+        Response r = serviceTarget.path("/foofoobar//level").request().get();
+        assertEquals(Response.Status.BAD_REQUEST, r.getStatusInfo().toEnum());
     }
 
     @Test
