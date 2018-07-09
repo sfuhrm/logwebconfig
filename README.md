@@ -4,7 +4,7 @@ Log Web Config
 [![Coverage Status](https://coveralls.io/repos/github/sfuhrm/logwebconfig/badge.svg)](https://coveralls.io/github/sfuhrm/logwebconfig) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig) 
 
-A very simple REST configuration of the Log4j2 logging facility.
+A simple runtime configuration REST configuration of the Log4j2 logging facility.
 
 ## Including it in your projects
 
