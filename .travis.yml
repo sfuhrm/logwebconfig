@@ -5,7 +5,7 @@ matrix:
   - jdk: openjdk8
   - jdk: oraclejdk8
 
-install: mvn install clirr:check -Dgpg.skip
+install: mvn install -Dgpg.skip
 
 after_success:
   - mvn -DrepoToken=${coveralls_token} clean test jacoco:report coveralls:report --projects=logwebconfig
