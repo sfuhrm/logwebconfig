@@ -10,9 +10,9 @@ You can modify the log levels of each and every logger inclusive the root logger
 #### Target scenarios
 
 The library comes handy for the following scenarios:
-* Non-JEE application.
+* Non-JEE application. JEE servers usually have frontends for configuring the log levels.
 * Applications of which you control the source.
-* Long-running server application.
+* Long-running server application. 
 
 #### Features
 
