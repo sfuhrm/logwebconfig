@@ -7,9 +7,20 @@ Log Web Config
 A simple runtime configuration REST configuration of the logging facility.
 You can modify the log levels of each and every logger inclusive the root logger with one HTTP PUT request.
 
+#### Target scenarios
+
+The library comes handy for the following scenarios:
+* Non-JEE application.
+* Applications of which you control the source.
+* Long-running server application.
+
+#### Features
+
 The features of this small library are:
 * Small footprint using a [mini](https://github.com/NanoHttpd/nanohttpd) http server.
 * Can interoperate with multiple logging frameworks. At the moment log4j2 is implemented.
+
+#### Pros and cons
 
 The advantages of configuring the log levels at runtime are:
 * Changes get active promptly. No need to copy files to many servers in a cluster.
