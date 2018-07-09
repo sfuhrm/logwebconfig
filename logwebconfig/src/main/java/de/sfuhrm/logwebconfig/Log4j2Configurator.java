@@ -1,6 +1,7 @@
 package de.sfuhrm.logwebconfig;
 
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
 
 import java.util.Optional;
@@ -36,7 +37,7 @@ class Log4j2Configurator extends LogConfigurator {
     private static class RootLoggerResource implements Resource {
         @Override
         public String read() {
-            return null;
+            return LogManager.getRootLogger().getLevel().toString();
         }
 
         @Override
@@ -60,7 +61,7 @@ class Log4j2Configurator extends LogConfigurator {
 
         @Override
         public String read() {
-            return null;
+            return LogManager.getLogger(logger).getLevel().toString();
         }
 
         @Override
