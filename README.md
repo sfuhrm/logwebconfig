@@ -66,6 +66,7 @@ Example
 ```
 curl -X PUT http://localhost:19293/?level=WARN
 
+curl -X PUT http://localhost:19293/com.company.my.Class?level=WARN
 ```
 
 ---------------------------------------
