@@ -17,7 +17,7 @@ following Apache Maven dependency:
 <dependency>
     <groupId>de.sfuhrm</groupId>
     <artifactId>logwebconfig</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 
@@ -65,7 +65,7 @@ Example for setting the root logger level:
 ---------------------------------------
 
 ```
-curl -X PUT http://localhost:19293/log4j2//level?level=WARN
+curl -X PUT -d WARN http://localhost:19293/log4j2//level
 ```
 
 ---------------------------------------
@@ -74,7 +74,7 @@ Example for setting the logger level for class 'com.company.my.Class':
 
 ---------------------------------------
 ```
-curl -X PUT http://localhost:19293/log4j2/com.company.my.Class/level?level=WARN
+curl -X PUT -d WARN http://localhost:19293/log4j2/com.company.my.Class/level
 ```
 
 ---------------------------------------

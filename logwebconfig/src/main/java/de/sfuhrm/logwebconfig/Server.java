@@ -3,7 +3,7 @@ package de.sfuhrm.logwebconfig;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.IOException;
-import java.util.Map;
+import java.nio.charset.Charset;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -100,11 +100,26 @@ final class Server extends NanoHTTPD {
     private void configure(final IHTTPSession session,
                            final LogConfigurator.Resource resource)
             throws ServerException {
-        Map<String, String> params = session.getParms();
-        String levelString = params.get(PARAM_LEVEL);
+        String lengthString = session.getHeaders().get("content-length");
+        if (lengthString == null) {
+            throw new ServerException(Response.Status.BAD_REQUEST,
+                    "Content-Length header is missing");
+        }
+        int length = Integer.parseInt(lengthString);
+
+        byte[] data = new byte[length];
+        try {
+            session.getInputStream().read(data);
+        } catch (IOException e) {
+            throw new ServerException(
+                    Response.Status.INTERNAL_ERROR,
+                    e.getMessage());
+        }
+
+        String levelString = new String(data, Charset.forName("ASCII"));
         if (levelString == null) {
             throw new ServerException(Response.Status.BAD_REQUEST,
-                    "Parameter '" + PARAM_LEVEL + "' is missing");
+                    "Parameter for level is missing");
         }
 
         try {

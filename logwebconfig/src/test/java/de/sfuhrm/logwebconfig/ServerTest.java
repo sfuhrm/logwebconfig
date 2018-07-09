@@ -86,9 +86,8 @@ public class ServerTest {
 
         Response r = serviceTarget
                 .path("/log4j2//level")
-                .queryParam(Server.PARAM_LEVEL, "DEBUG")
                 .request()
-                .put(Entity.entity("", MediaType.TEXT_PLAIN_TYPE));
+                .put(Entity.entity("DEBUG", MediaType.TEXT_PLAIN_TYPE));
         assertEquals(Response.Status.OK.getStatusCode(), r.getStatus());
 
         PowerMockito.verifyStatic(Configurator.class);
@@ -104,9 +103,8 @@ public class ServerTest {
 
         Response r = serviceTarget
                 .path("log4j2").path(logger).path("level")
-                .queryParam(Server.PARAM_LEVEL, "ERROR")
                 .request()
-                .put(Entity.entity("", MediaType.TEXT_PLAIN_TYPE));
+                .put(Entity.entity("ERROR", MediaType.TEXT_PLAIN_TYPE));
         assertEquals(Response.Status.OK.getStatusCode(), r.getStatus());
 
         PowerMockito.verifyStatic(Configurator.class);
