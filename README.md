@@ -19,8 +19,10 @@ The library comes handy for the following scenarios:
 #### Features
 
 The features of this small library are:
-* Small footprint using a [mini](https://github.com/NanoHttpd/nanohttpd) http server.
+* Get (HTTP GET) and modify (HTTP PUT) the log levels of loggers of your
+logging framework.
 * Can interoperate with multiple logging frameworks. At the moment log4j2 is implemented.
+* Small footprint using a [mini](https://github.com/NanoHttpd/nanohttpd) http server.
 
 #### Pros and cons
 
