@@ -64,7 +64,7 @@ Example
 ---------------------------------------
 
 ```
-curl -X PUT -d 'name=foofoo' http://localhost:19293/?level=WARN
+curl -X PUT http://localhost:19293/?level=WARN
 
 ```
 
