@@ -4,7 +4,24 @@ Log Web Config
 [![Coverage Status](https://coveralls.io/repos/github/sfuhrm/logwebconfig/badge.svg)](https://coveralls.io/github/sfuhrm/logwebconfig) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig) 
 
-A simple runtime configuration REST configuration of the Log4j2 logging facility.
+A simple runtime configuration REST configuration of the logging facility.
+You can modify the log levels of each and every logger inclusive the root logger with one HTTP PUT request.
+
+The features of this small library are:
+* Small footprint using a [mini](https://github.com/NanoHttpd/nanohttpd) http server.
+* Can interoperate with multiple logging frameworks. At the moment log4j2 is implemented.
+
+The advantages of configuring the log levels at runtime are:
+* Changes get active promptly. No need to copy files to many servers in a cluster.
+* Changes get active smoothly. No need to restart applications.
+* Changes can be configured easily. No long XML, JSON or properties files.
+* Changes can be toggled while reading the code. No need to fine-configure every logger at deploy time.
+* Safe configuration. No risk of logging configuration files to be malformed.
+
+The disadvantages are:
+* There's a http server thread running besides your application.
+* There's one more TCP/IP port to worry about. One more iptables / ACL
+to write if your organisation does whitelisting of ports.
 
 ## Including it in your projects
 
