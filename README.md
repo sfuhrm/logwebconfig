@@ -23,7 +23,7 @@ The library comes handy for the following scenarios:
 The features of this small library are:
 * Get (HTTP GET) and modify (HTTP PUT) the log levels of loggers of your
 logging framework.
-* Can interoperate with multiple logging frameworks. At the moment log4j2 is implemented.
+* Can interoperate with multiple logging frameworks. At the moment log4j1 and log4j2 is implemented.
 * Small footprint using a [mini](https://github.com/NanoHttpd/nanohttpd) http server.
 
 #### Pros and cons
@@ -99,6 +99,36 @@ Example for listening on all interface addresses on port 54321:
 java -DLOGWEBCONFIG_PORT=54321 -DLOGWEBCONFIG_HOST=0.0.0.0 -jar myjar.jar ...
 ```
 
+---------------------------------------
+
+## Run time: Configuring log4j1
+
+Log4j1 is configured by simply issueing PUT requests with the logger seen as a
+resource and the log level as a request parameter.
+
+Example for setting the root logger level:
+
+---------------------------------------
+```Shell
+curl -X PUT -d WARN http://localhost:19293/log4j1//level
+```
+---------------------------------------
+
+Example for setting the logger level for class 'com.company.my.Class':
+
+---------------------------------------
+```Shell
+curl -X PUT -d WARN http://localhost:19293/log4j1/com.company.my.Class/level
+```
+---------------------------------------
+
+Example for getting the root logger level:
+
+---------------------------------------
+```Shell
+curl -X GET  http://localhost:19293/log4j1//level
+ERROR
+```
 ---------------------------------------
 
 

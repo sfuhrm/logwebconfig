@@ -131,7 +131,7 @@ final class Server extends NanoHTTPD {
      *  */
     private LogConfigurator.Resource getResource(
             final IHTTPSession session) throws ServerException {
-        Pattern pattern = Pattern.compile("/*(log4j|log4j2)/([^/]*)/level");
+        Pattern pattern = Pattern.compile("/*(log4j1|log4j2)/([^/]*)/level");
         Matcher matcher = pattern.matcher(session.getUri());
         if (!matcher.matches()) {
             throw new ServerException(
@@ -144,7 +144,7 @@ final class Server extends NanoHTTPD {
 
         LogConfigurator logConfigurator;
         switch (logFramework) {
-            case "log4j":
+            case "log4j1":
                 logConfigurator = new Log4j1Configurator();
                 break;
             case "log4j2":
