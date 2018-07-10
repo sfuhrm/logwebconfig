@@ -7,8 +7,8 @@ Log Web Config
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
-A simple runtime configuration REST configuration of the logging facility.
-You can modify the log levels of each and every logger inclusive the root logger with one HTTP PUT request.
+A simple runtime REST-based configuration of the logging facility.
+You can query and modify the log levels of each and every logger inclusive the root logger with one HTTP PUT request.
 
 #### Target scenarios
 
