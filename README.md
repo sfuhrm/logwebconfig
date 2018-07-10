@@ -88,6 +88,8 @@ The following properties are there for configuration:
 This can be used to restrict the accessibility of the configuration from outside. Exposing the service to the internet by listening to all addresses ("0.0.0.0")
 might be a security risk because you can put the root logging level of your application to debug.
 * **LOGWEBCONFIG_ENABLE**: Whether to enable the server. Defaults to true.
+* **LOGWEBCONFIG_USER**: Username to use for HTTP basic authentication of the client. Defaults to no authentication.
+* **LOGWEBCONFIG_PASSWORD**: Password to use for HTTP basic authentication of the client. Defaults to no authentication.
 
 Example for listening on all interface addresses on port 54321:
 

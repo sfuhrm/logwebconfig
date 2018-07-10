@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,6 +68,61 @@ public class ServerTest {
         Response r = serviceTarget.path("/log4j2//level").request().get();
         String level = r.readEntity(String.class);
         assertEquals("ALL", level);
+    }
+
+    @Test
+    public void getWithAuthenticationMissing() {
+        server.setAuthentication("user", "password");
+        PowerMockito.mockStatic(LogManager.class);
+        Logger rootLogger = PowerMockito.mock(Logger.class);
+        PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
+        PowerMockito.when(LogManager.getRootLogger()).thenReturn(rootLogger);
+
+        Response r = serviceTarget.path("/log4j2//level").request().get();
+        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), r.getStatus());
+        assertEquals("Basic realm=\"LogWebConfig\"", r.getHeaderString("WWW-Authenticate"));
+    }
+
+    @Test
+    public void getWithAuthenticationFailing() {
+        server.setAuthentication("user", "password");
+        PowerMockito.mockStatic(LogManager.class);
+
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
+                .nonPreemptive()
+                .credentials("X", "Y")
+                .build();
+
+        jerseyClient.register(feature);
+
+        Logger rootLogger = PowerMockito.mock(Logger.class);
+        PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
+        PowerMockito.when(LogManager.getRootLogger()).thenReturn(rootLogger);
+
+        Response r = serviceTarget.path("/log4j2//level").request().get();
+        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), r.getStatus());
+        assertEquals("Basic realm=\"LogWebConfig\"", r.getHeaderString("WWW-Authenticate"));
+    }
+
+    @Test
+    public void getWithAuthenticationOK() {
+        server.setAuthentication("user", "password");
+        PowerMockito.mockStatic(LogManager.class);
+
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
+                .nonPreemptive()
+                .credentials("user", "password")
+                .build();
+
+        jerseyClient.register(feature);
+
+        Logger rootLogger = PowerMockito.mock(Logger.class);
+        PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
+        PowerMockito.when(LogManager.getRootLogger()).thenReturn(rootLogger);
+
+        Response r = serviceTarget.path("/log4j2//level").request().get();
+        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), r.getStatus());
+        assertEquals("Basic realm=\"LogWebConfig\"", r.getHeaderString("WWW-Authenticate"));
     }
 
     @Test

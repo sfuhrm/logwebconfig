@@ -4,6 +4,7 @@ import fi.iki.elonen.NanoHTTPD;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,6 +12,12 @@ import java.util.regex.Pattern;
 /** HTTP server for handling RESTy requests and passing them on to log4j2.
  * */
 final class Server extends NanoHTTPD {
+
+    /** Optional username to authenticate with.  */
+    private String username;
+
+    /** Optional password to authenticate with.  */
+    private String password;
 
     /** Constructs a new server and starts it.
      * @param hostname the host name to listen to, or {@code null}
@@ -23,9 +30,74 @@ final class Server extends NanoHTTPD {
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, true);
     }
 
+    /** Configures the authentication information to authenticate the
+     * clients with.
+     * @param inUsername the name of the user expected.
+     * @param inPassword the password expected.
+     * */
+    void setAuthentication(final String inUsername,
+                           final String inPassword) {
+        this.username = inUsername;
+        this.password = inPassword;
+    }
+
+    /** Checks the authentication information.
+     * If no authentication is configured, this call just returns.
+     * Otherwise, it checks authentication ant throws a ServerException if
+     * authentication fails.
+     * @param session the session the check authentication for.
+     * @throws ServerException if authentication fails.
+     *  */
+    private void checkAuthentication(final IHTTPSession session)
+            throws ServerException {
+        if (username != null
+                && password != null) {
+            String auth = session.getHeaders().get("authorization");
+            if (auth == null) {
+                throw unauth();
+            }
+
+            int spaceIndex = auth.indexOf(" ");
+            if (spaceIndex == -1) {
+                throw unauth();
+            }
+
+            String first = auth.substring(0, spaceIndex);
+            if (!first.equals("Basic")) {
+                throw unauth();
+            }
+
+            String base64 = auth.substring(spaceIndex);
+
+            byte[] clientAuthBytes = Base64.getDecoder().decode(base64);
+            String clientAuth = new String(
+                    clientAuthBytes,
+                    Charset.forName("ISO-8859-15"));
+            String serverAuth = username + ":" + password;
+            if (!serverAuth.equals(clientAuth)) {
+                unauth();
+            }
+        }
+    }
+
+    /** Creates a new unauthorized server exception.
+     * This is a convenience method for
+     * {@link #checkAuthentication(IHTTPSession)}.
+     * @return the generated exception that also sets the
+     * {@code WWW-Authenticate} HTTP header.
+     * */
+    private ServerException unauth() {
+      return new ServerException(Response.Status.UNAUTHORIZED,
+              "",
+              Optional.of(r -> r.addHeader(
+                      "WWW-Authenticate",
+                      "Basic realm=\"LogWebConfig\"")));
+      };
+
     @Override
     public Response serve(final IHTTPSession session) {
         try {
+            checkAuthentication(session);
             Method method = session.getMethod();
             LogConfigurator.Resource resource = getResource(session);
             switch (method) {

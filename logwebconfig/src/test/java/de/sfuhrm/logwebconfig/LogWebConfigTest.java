@@ -43,6 +43,14 @@ public class LogWebConfigTest {
     }
 
     @Test
+    public void startWithUserPassword() throws IOException {
+        assertNull(singleton());
+        System.setProperty("LOGWEBCONFIG_USER", "u");
+        System.setProperty("LOGWEBCONFIG_PASSWORD", "p");
+        LogWebConfig.start();
+    }
+
+    @Test
     public void startOnce() {
         assertNull(singleton());
         LogWebConfig.start();

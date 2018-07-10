@@ -15,6 +15,10 @@ public final class LogWebConfig {
     private static final String PROPERTY_HOST = "LOGWEBCONFIG_HOST";
     /** System property to configure whether the server is started or not. */
     private static final String PROPERTY_ENABLE = "LOGWEBCONFIG_ENABLE";
+    /** System property to configure the username to authenticate with. */
+    private static final String PROPERTY_USER = "LOGWEBCONFIG_USER";
+    /** System property to configure the password to authenticate with. */
+    private static final String PROPERTY_PASSWORD = "LOGWEBCONFIG_PASSWORD";
 
     /** The singleton server instance. */
     private static Server singleton;
@@ -49,11 +53,17 @@ public final class LogWebConfig {
             return;
         }
 
+        String username = System.getProperty(PROPERTY_USER);
+        String password = System.getProperty(PROPERTY_PASSWORD);
+
         String host = System.getProperty(PROPERTY_HOST, DEFAULT_HOST);
         int port = Integer.parseInt(
                 System.getProperty(PROPERTY_PORT, DEFAULT_PORT));
         try {
             singleton = new Server(host, port);
+            if (username != null && password != null) {
+                singleton.setAuthentication(username, password);
+            }
         } catch (IOException e) {
             System.err.println("logwebconfig: Got IO exception, probably the "
                     + "TCP/IP port " + port + " is already taken.");
