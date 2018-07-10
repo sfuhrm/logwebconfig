@@ -72,7 +72,7 @@ final class Server extends NanoHTTPD {
             byte[] clientAuthBytes = Base64.getDecoder().decode(base64);
             String clientAuth = new String(
                     clientAuthBytes,
-                    Charset.forName("ISO-8859-15"));
+                    Charset.forName("ISO-8859-1"));
             String serverAuth = username + ":" + password;
             if (!serverAuth.equals(clientAuth)) {
                 throw unauth();
