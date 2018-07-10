@@ -67,7 +67,7 @@ final class Server extends NanoHTTPD {
                 throw unauth();
             }
 
-            String base64 = auth.substring(spaceIndex);
+            String base64 = auth.substring(spaceIndex + 1);
 
             byte[] clientAuthBytes = Base64.getDecoder().decode(base64);
             String clientAuth = new String(
@@ -75,7 +75,7 @@ final class Server extends NanoHTTPD {
                     Charset.forName("ISO-8859-15"));
             String serverAuth = username + ":" + password;
             if (!serverAuth.equals(clientAuth)) {
-                unauth();
+                throw unauth();
             }
         }
     }

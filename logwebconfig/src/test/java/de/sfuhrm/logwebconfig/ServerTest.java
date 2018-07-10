@@ -33,6 +33,7 @@ public class ServerTest {
     private Server server;
     private Client jerseyClient;
     private WebTarget serviceTarget;
+    private int port = 9999;
 
     @After
     public void shutdown() {
@@ -43,7 +44,6 @@ public class ServerTest {
 
     @Before
     public void startup() throws IOException {
-        int port = 9999;
         server = new Server(null, port);
         jerseyClient = ClientBuilder.newClient();
         serviceTarget = jerseyClient.target("http://localhost:" + port);
@@ -88,12 +88,10 @@ public class ServerTest {
         server.setAuthentication("user", "password");
         PowerMockito.mockStatic(LogManager.class);
 
-        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
-                .nonPreemptive()
-                .credentials("X", "Y")
-                .build();
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("X", "Y");
 
         jerseyClient.register(feature);
+        serviceTarget = jerseyClient.target("http://localhost:" + port);
 
         Logger rootLogger = PowerMockito.mock(Logger.class);
         PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
@@ -109,12 +107,10 @@ public class ServerTest {
         server.setAuthentication("user", "password");
         PowerMockito.mockStatic(LogManager.class);
 
-        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
-                .nonPreemptive()
-                .credentials("user", "password")
-                .build();
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("user", "password");
 
         jerseyClient.register(feature);
+        serviceTarget = jerseyClient.target("http://localhost:" + port);
 
         Logger rootLogger = PowerMockito.mock(Logger.class);
         PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
