@@ -121,8 +121,9 @@ public class ServerTest {
         PowerMockito.when(LogManager.getRootLogger()).thenReturn(rootLogger);
 
         Response r = serviceTarget.path("/log4j2//level").request().get();
-        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), r.getStatus());
-        assertEquals("Basic realm=\"LogWebConfig\"", r.getHeaderString("WWW-Authenticate"));
+        assertEquals(Response.Status.OK.getStatusCode(), r.getStatus());
+        String level = r.readEntity(String.class);
+        assertEquals("ALL", level);
     }
 
     @Test
