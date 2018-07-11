@@ -29,10 +29,9 @@ logging framework.
 #### Pros and cons
 
 The advantages of configuring the log levels at runtime are:
-* Changes get active promptly. No need to copy files to many servers in a cluster.
+* Changes get active promptly. No need to copy config files to many servers in a cluster.
 * Changes get active smoothly. No need to restart applications.
 * Changes can be configured easily. No long XML, JSON or properties files.
-* Changes can be toggled while reading the code. No need to fine-configure every logger at deploy time.
 * Safe configuration. No risk of logging configuration files to be malformed.
 
 The disadvantages are:
