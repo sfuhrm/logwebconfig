@@ -181,7 +181,12 @@ final class Server extends NanoHTTPD {
 
         byte[] data = new byte[length];
         try {
-            session.getInputStream().read(data);
+            int readLength = session.getInputStream().read(data);
+            if (readLength != length) {
+                throw new ServerException(
+                        Response.Status.INTERNAL_ERROR,
+                        "Short read");
+            }
         } catch (IOException e) {
             throw new ServerException(
                     Response.Status.INTERNAL_ERROR,
