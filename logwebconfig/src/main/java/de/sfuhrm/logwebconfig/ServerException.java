@@ -41,7 +41,7 @@ class ServerException extends Exception {
             final Optional<Consumer<NanoHTTPD.Response>> inConsumer) {
         super(inMessage);
         this.status = Objects.requireNonNull(inStatus);
-        Objects.requireNonNull(inMessage);
+        message = Objects.requireNonNull(inMessage);
         this.responseConsumer = Objects.requireNonNull(inConsumer);
     }
 
