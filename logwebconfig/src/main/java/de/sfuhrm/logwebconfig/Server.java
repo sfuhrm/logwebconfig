@@ -194,11 +194,6 @@ final class Server extends NanoHTTPD {
         }
 
         String levelString = new String(data, Charset.forName("ASCII"));
-        if (levelString == null) {
-            throw new ServerException(Response.Status.BAD_REQUEST,
-                    "Parameter for level is missing");
-        }
-
         try {
                 resource.update(levelString);
         } catch (IllegalArgumentException e) {
