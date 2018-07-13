@@ -59,7 +59,7 @@ public class ServerTest {
     }
 
     @Test
-    public void get() {
+    public void getWithLog4j2() {
         PowerMockito.mockStatic(LogManager.class);
         Logger rootLogger = PowerMockito.mock(Logger.class);
         PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
@@ -89,6 +89,25 @@ public class ServerTest {
         PowerMockito.mockStatic(LogManager.class);
 
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("X", "Y");
+
+        jerseyClient.register(feature);
+        serviceTarget = jerseyClient.target("http://localhost:" + port);
+
+        Logger rootLogger = PowerMockito.mock(Logger.class);
+        PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
+        PowerMockito.when(LogManager.getRootLogger()).thenReturn(rootLogger);
+
+        Response r = serviceTarget.path("/log4j2//level").request().get();
+        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), r.getStatus());
+        assertEquals("Basic realm=\"LogWebConfig\"", r.getHeaderString("WWW-Authenticate"));
+    }
+
+    @Test
+    public void getWithAuthenticationWrongMode() {
+        server.setAuthentication("user", "password");
+        PowerMockito.mockStatic(LogManager.class);
+
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.digest("X", "Y");
 
         jerseyClient.register(feature);
         serviceTarget = jerseyClient.target("http://localhost:" + port);
