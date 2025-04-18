@@ -105,9 +105,9 @@ final class Server extends NanoHTTPD {
     private ServerException unauth() {
       return new ServerException(Response.Status.UNAUTHORIZED,
               "",
-              Optional.of(r -> r.addHeader(
+              r -> r.addHeader(
                       "WWW-Authenticate",
-                      "Basic realm=\"LogWebConfig\"")));
+                      "Basic realm=\"LogWebConfig\""));
       };
 
     @Override

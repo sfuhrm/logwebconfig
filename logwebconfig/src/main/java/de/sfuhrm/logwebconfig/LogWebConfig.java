@@ -49,7 +49,7 @@ public final class LogWebConfig {
         }
 
         String enabled = System.getProperty(PROPERTY_ENABLE);
-        if (enabled != null && !Boolean.valueOf(enabled)) {
+        if (enabled != null && !Boolean.parseBoolean(enabled)) {
             return;
         }
 

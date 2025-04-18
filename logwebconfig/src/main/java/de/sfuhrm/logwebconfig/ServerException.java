@@ -11,13 +11,13 @@ import java.util.function.Consumer;
  * */
 class ServerException extends Exception {
     /** The HTTP status to return. */
-    private NanoHTTPD.Response.Status status;
+    private final NanoHTTPD.Response.Status status;
 
     /** The status message to return.*/
-    private String message;
+    private final String message;
 
-    /** Modifies the response. */
-    private Optional<Consumer<NanoHTTPD.Response>> responseConsumer;
+    /** Modifies the response, nullable. */
+    private Consumer<NanoHTTPD.Response> responseConsumer;
 
     /** Constructs a new exception.
      * @param inStatus the HTTP status associated.
@@ -26,7 +26,7 @@ class ServerException extends Exception {
     ServerException(
             final NanoHTTPD.Response.Status inStatus,
             final String inMessage) {
-        this(inStatus, inMessage, Optional.empty());
+        this(inStatus, inMessage, null);
     }
 
     /** Constructs a new exception.
@@ -38,11 +38,11 @@ class ServerException extends Exception {
     ServerException(
             final NanoHTTPD.Response.Status inStatus,
             final String inMessage,
-            final Optional<Consumer<NanoHTTPD.Response>> inConsumer) {
+            final Consumer<NanoHTTPD.Response> inConsumer) {
         super(inMessage);
         this.status = Objects.requireNonNull(inStatus);
         message = Objects.requireNonNull(inMessage);
-        this.responseConsumer = Objects.requireNonNull(inConsumer);
+        this.responseConsumer = inConsumer;
     }
 
     /** Converts the exception to a server response.
@@ -55,8 +55,8 @@ class ServerException extends Exception {
                         NanoHTTPD.MIME_PLAINTEXT,
                         message + "\r\n");
 
-        responseConsumer.ifPresent(t -> t.accept(response));
-
+        Optional.ofNullable(responseConsumer)
+                .ifPresent(t -> t.accept(response));
         return response;
     }
 }

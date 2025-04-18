@@ -27,7 +27,7 @@ class Log4j2Configurator extends LogConfigurator {
 
     @Override
     public Optional<Resource> findResource(final String resource) {
-        if (resource == null || resource.isEmpty() || resource.equals("/")) {
+        if (resource == null || resource.isEmpty() || "/".equals(resource)) {
             return Optional.of(new RootLoggerResource());
         }
         return Optional.of(new LoggerResource(resource));
