@@ -73,13 +73,13 @@ final class Server extends NanoHTTPD {
                 throw unauth();
             }
 
-            int spaceIndex = auth.indexOf(" ");
+            int spaceIndex = auth.indexOf(' ');
             if (spaceIndex == -1) {
                 throw unauth();
             }
 
             String first = auth.substring(0, spaceIndex);
-            if (!first.equals("Basic")) {
+            if (!"Basic".equals(first)) {
                 throw unauth();
             }
 
