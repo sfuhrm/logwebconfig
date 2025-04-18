@@ -1,7 +1,7 @@
 Log Web Config
 ===================
 [![Java CI with Maven](https://github.com/sfuhrm/logwebconfig/actions/workflows/maven-ref.yml/badge.svg)](https://github.com/sfuhrm/logwebconfig/actions/workflows/maven-ref.yml)
-[![Code Coverage](https://github.com/sfuhrm/logwebconfig/refs/heads/gh-pages/jacoco.svg)](https://github.com/sfuhrm/logwebconfig/actions/workflows/jacoco-badge-ref.yml)
+[![Code Coverage](https://raw.githubusercontent.com/sfuhrm/logwebconfig/refs/heads/gh-pages/jacoco.svg)](https://github.com/sfuhrm/logwebconfig/actions/workflows/jacoco-badge-ref.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig) 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
