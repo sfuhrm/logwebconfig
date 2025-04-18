@@ -82,7 +82,7 @@ public class MyApp {
 Configuration of the server is done using Java system properties.
 By default the server listens on TCP/IP port 19293.
 
-The following properties are there for configuration:
+The following Java system properties (settable in your application invocation for example like `java -DLOGWEBCONFIG_PORT=12345 ...`) are there for configuration:
 
 * **LOGWEBCONFIG_PORT**: The TCP/IP port for the HTTP-server to listen to. Example value is 19293 which is also the default port.
 * **LOGWEBCONFIG_HOST**: The IP address to bind the listening socket to. Defaults to "127.0.0.1" which is only reachable from localhost.
