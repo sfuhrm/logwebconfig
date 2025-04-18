@@ -2,6 +2,7 @@ package de.sfuhrm.logwebconfig;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.util.Optional;
 
@@ -31,23 +32,41 @@ class Log4j1Configurator extends LogConfigurator {
         return Optional.of(new LoggerResource(resource));
     }
 
+    /** Dynamic method for {@link LogManager#getRootLogger()}
+     * to support mocking.
+     * @return the root logger.
+     * */
+    Logger getRootLogger() {
+        return LogManager.getRootLogger();
+    }
+
     /** Resource representing the root logger.
      * */
-    private static class RootLoggerResource implements Resource {
+    private class RootLoggerResource implements Resource {
         @Override
         public String read() {
-            return LogManager.getRootLogger().getLevel().toString();
+            return getRootLogger().getLevel().toString();
         }
 
         @Override
         public void update(final String newLevel) {
-            LogManager.getRootLogger().setLevel(parseLevel(newLevel));
+            getRootLogger().setLevel(parseLevel(newLevel));
         }
     }
 
+    /** Dynamic method for {@link LogManager#getLogger(String)}
+     * to support mocking.
+     * @param logger the name of the logger to get.
+     * @return the requested logger.
+     * */
+    Logger getLogger(final String logger) {
+        return LogManager.getLogger(logger);
+    }
+
+
     /** Resource representing a named logger.
      * */
-    private static class LoggerResource implements Resource {
+    private class LoggerResource implements Resource {
         /** The name of the logger to configure. */
         private String logger;
 
@@ -60,12 +79,12 @@ class Log4j1Configurator extends LogConfigurator {
 
         @Override
         public String read() {
-            return LogManager.getLogger(logger).getLevel().toString();
+            return getLogger(logger).getLevel().toString();
         }
 
         @Override
         public void update(final String newLevel) {
-            LogManager.getLogger(logger).setLevel(parseLevel(newLevel));
+            getLogger(logger).setLevel(parseLevel(newLevel));
         }
     }
 }

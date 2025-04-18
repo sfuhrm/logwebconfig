@@ -1,5 +1,6 @@
 package de.sfuhrm.logwebconfig;
 
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -32,23 +33,58 @@ class Log4j2Configurator extends LogConfigurator {
         return Optional.of(new LoggerResource(resource));
     }
 
+    /** Dynamic method for {@link LogManager#getRootLogger()}
+     * to support mocking.
+     * @return the root logger.
+     * */
+    Logger getRootLogger() {
+        return LogManager.getRootLogger();
+    }
+
+    /** Dynamic method for {@link Configurator#setRootLevel(Level)}
+     * to support mocking.
+     * @param level the level to configure.
+     * */
+    void setRootLevel(final Level level) {
+        Configurator.setRootLevel(level);
+    }
+
     /** Resource representing the root logger.
      * */
-    private static class RootLoggerResource implements Resource {
+    private class RootLoggerResource implements Resource {
         @Override
         public String read() {
-            return LogManager.getRootLogger().getLevel().toString();
+            return getRootLogger().getLevel().toString();
         }
 
         @Override
         public void update(final String newLevel) {
-            Configurator.setRootLevel(parseLevel(newLevel));
+            setRootLevel(parseLevel(newLevel));
         }
     }
 
+    /** Dynamic method for {@link org.apache.log4j.LogManager#getLogger(String)}
+     * to support mocking.
+     * @param logger the name of the logger to get.
+     * @return the requested logger instance.
+     * */
+    Logger getLogger(final String logger) {
+        return LogManager.getLogger(logger);
+    }
+
+    /** Dynamic method for {@link Configurator#setLevel(String, Level)}
+     * to support mocking.
+     * @param logger the name of the logger to configure the level for.
+     * @param level the level to set.
+     * */
+    void setLevel(final String logger, final Level level) {
+        Configurator.setLevel(logger, level);
+    }
+
+
     /** Resource representing a named logger.
      * */
-    private static class LoggerResource implements Resource {
+    private class LoggerResource implements Resource {
         /** The name of the logger to configure. */
         private String logger;
 
@@ -61,12 +97,12 @@ class Log4j2Configurator extends LogConfigurator {
 
         @Override
         public String read() {
-            return LogManager.getLogger(logger).getLevel().toString();
+            return getLogger(logger).getLevel().toString();
         }
 
         @Override
         public void update(final String newLevel) {
-            Configurator.setLevel(logger, parseLevel(newLevel));
+            setLevel(logger, parseLevel(newLevel));
         }
     }
 }

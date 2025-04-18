@@ -5,45 +5,56 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test for the {@link Log4j2Configurator} class.
  * */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest( { Configurator.class, LogManager.class } )
 public class Log4j2ConfiguratorTest {
+
+    private MockedStatic<LogManager> mockedLogManager;
+
+    private MockedStatic<Configurator> mockedConfigurator;
 
     private Log4j2Configurator instance;
 
-    @Before
+    @BeforeEach
     public void init() {
         instance = new Log4j2Configurator();
     }
 
+    @BeforeEach
+    void setUpStaticMocks() {
+        mockedLogManager = Mockito.mockStatic(LogManager.class);
+        mockedConfigurator = Mockito.mockStatic(Configurator.class);
+    }
+
+    @AfterEach
+    void tearDownStaticMocks() {
+        mockedConfigurator.closeOnDemand();
+        mockedLogManager.closeOnDemand();
+    }
+
     @Test
     public void readLogger() {
-        PowerMockito.mockStatic(LogManager.class);
-        Logger logger = PowerMockito.mock(Logger.class);
-        PowerMockito.when(logger.getLevel()).thenReturn(Level.ALL);
-        PowerMockito.when(LogManager.getLogger("foo.bar.Baz")).thenReturn(logger);
+        Logger logger = Mockito.mock(Logger.class);
+        Mockito.when(logger.getLevel()).thenReturn(Level.ALL);
+        mockedLogManager.when(() -> LogManager.getLogger("foo.bar.Baz")).thenReturn(logger);
 
         String level = instance.findResource("foo.bar.Baz").get().read();
         assertEquals("ALL", level);
@@ -51,42 +62,34 @@ public class Log4j2ConfiguratorTest {
 
     @Test
     public void updateLogger() {
-        PowerMockito.mockStatic(Configurator.class);
-
         instance.findResource("foo.bar.Baz").get().update("DEBUG");
-
-        PowerMockito.verifyStatic(Configurator.class);
-        Configurator.setLevel("foo.bar.Baz", Level.DEBUG);
+        mockedConfigurator.verify(() -> Configurator.setLevel("foo.bar.Baz", Level.DEBUG));
     }
 
     @Test
     public void readRootLogger() {
-        PowerMockito.mockStatic(LogManager.class);
-        Logger rootLogger = PowerMockito.mock(Logger.class);
-        PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
-        PowerMockito.when(LogManager.getRootLogger()).thenReturn(rootLogger);
+        Logger rootLogger = Mockito.mock(Logger.class);
+        Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
+        mockedLogManager.when(LogManager::getRootLogger).thenReturn(rootLogger);
 
         String level = instance.findResource("").get().read();
         assertEquals("ALL", level);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void updateRootLoggerWithWrongLevel() {
-        PowerMockito.mockStatic(LogManager.class);
-        Logger rootLogger = PowerMockito.mock(Logger.class);
-        PowerMockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
-        PowerMockito.when(LogManager.getRootLogger()).thenReturn(rootLogger);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Logger rootLogger = Mockito.mock(Logger.class);
+            Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
+            mockedLogManager.when(LogManager::getRootLogger).thenReturn(rootLogger);
 
-        instance.findResource("").get().update("FOOBAR");
+            instance.findResource("").get().update("FOOBAR");
+        });
     }
 
     @Test
     public void updateRootLogger() {
-        PowerMockito.mockStatic(Configurator.class);
-
         instance.findResource("").get().update("DEBUG");
-
-        PowerMockito.verifyStatic(Configurator.class);
-        Configurator.setRootLevel(Level.DEBUG);
+        mockedConfigurator.verify(() -> Configurator.setRootLevel(Level.DEBUG));
     }
 }

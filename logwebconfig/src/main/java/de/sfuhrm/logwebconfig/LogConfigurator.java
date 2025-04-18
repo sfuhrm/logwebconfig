@@ -23,7 +23,7 @@ abstract class LogConfigurator {
      * @param resource the logger name. Usually this is the empty String for the
      *                 root logger and everything else being interpreted as a
      *                 Java fully qualified class name.
-     * @return the found logger or {@code {@link Optional#EMPTY} if not found.
+     * @return the found logger or {@code {@link Optional#empty()} if not found.
      * */
     public abstract Optional<Resource> findResource(String resource);
 }

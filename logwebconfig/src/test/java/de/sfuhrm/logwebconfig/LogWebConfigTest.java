@@ -1,14 +1,14 @@
 package de.sfuhrm.logwebconfig;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.powermock.reflect.Whitebox;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test for the {@link LogWebConfig} class.
@@ -16,10 +16,17 @@ import static org.junit.Assert.*;
 public class LogWebConfigTest {
 
     private Server singleton() {
-        return Whitebox.getInternalState(LogWebConfig.class, "singleton");
+        Class<?> clazz = LogWebConfig.class;
+        try {
+            Field singletonField = clazz.getDeclaredField("singleton");
+            singletonField.setAccessible(true);
+            return (Server) singletonField.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @Before
+    @BeforeEach
     public void shutdown() {
         LogWebConfig.stop();
     }

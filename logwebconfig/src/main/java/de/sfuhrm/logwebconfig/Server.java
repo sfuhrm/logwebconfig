@@ -25,9 +25,25 @@ final class Server extends NanoHTTPD {
      * @param port the TCP/IP port to listen on.
      * @throws IOException when not able to binding to the port.
      * */
-    Server(final String hostname, final int port) throws IOException {
+    Server(final String hostname,
+           final int port) throws IOException {
+        this(hostname, port, true);
+    }
+
+    /** Constructs a new server and starts it.
+     * @param hostname the host name to listen to, or {@code null}
+     *                 for listen to all addresses.
+     * @param port the TCP/IP port to listen on.
+     * @param start whether to start the server thread.
+     * @throws IOException when not able to binding to the port.
+     * */
+    Server(final String hostname,
+           final int port,
+           final boolean start) throws IOException {
         super(hostname, port);
-        start(NanoHTTPD.SOCKET_READ_TIMEOUT, true);
+        if (start) {
+            start(NanoHTTPD.SOCKET_READ_TIMEOUT, true);
+        }
     }
 
     /** Configures the authentication information to authenticate the
@@ -142,6 +158,26 @@ final class Server extends NanoHTTPD {
         String logFramework = matcher.group(1);
         String logger = matcher.group(2);
 
+        LogConfigurator logConfigurator = getLogConfigurator(logFramework);
+        Optional<LogConfigurator.Resource> resource =
+                logConfigurator.findResource(logger);
+        if (!resource.isPresent()) {
+            throw new ServerException(Response.Status.NOT_FOUND,
+                    "Logger not found: " + logger + "'");
+        }
+        return resource.get();
+    }
+
+    /**
+     * Get the log configurator for the named logging framework.
+     * @param logFramework the log framework name to get.
+     *                     Possible frameworks are at the
+     *                     moment: {@code "log4j1"}, {@code "log4j2"}.
+     * @return the logging framework specific configurator instance.
+     * @throws ServerException if the logging framework was not found.
+     * */
+    LogConfigurator getLogConfigurator(
+            final String logFramework) throws ServerException {
         LogConfigurator logConfigurator;
         switch (logFramework) {
             case "log4j1":
@@ -155,13 +191,7 @@ final class Server extends NanoHTTPD {
                         Response.Status.BAD_REQUEST,
                         "Unknown framework " + logFramework);
         }
-        Optional<LogConfigurator.Resource> resource =
-                logConfigurator.findResource(logger);
-        if (!resource.isPresent()) {
-            throw new ServerException(Response.Status.NOT_FOUND,
-                    "Logger not found: " + logger + "'");
-        }
-        return resource.get();
+        return logConfigurator;
     }
 
     /** Configures a logger based on the data in the request.
