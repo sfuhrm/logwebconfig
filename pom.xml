@@ -107,7 +107,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
+                <version>3.2.7</version>
                 <configuration>
                     <keyname>9C3D5D0E75C71CE338930BF073FA841FE7DCB91F</keyname>
                 </configuration>
@@ -124,7 +124,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>validate</id>
