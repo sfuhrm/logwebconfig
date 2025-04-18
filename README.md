@@ -8,6 +8,8 @@ Log Web Config
 
 
 A simple runtime REST-based embedded HTTP server for configuring the log levels of Log4j1 and Log4j2 loggers.
+You can embed the server with one line in your Java program and configure log levels in the runtime with simple
+`curl` commands to `localhost`.
 You can query and modify the log levels of each and every logger inclusive the root logger with one HTTP PUT request.
 
 #### Target scenarios
