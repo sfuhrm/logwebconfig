@@ -1,8 +1,7 @@
 Log Web Config
 ===================
-![Travis CI Status](https://travis-ci.org/sfuhrm/logwebconfig.svg?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3d9b5025bb484534b9daab2fc5f3da73)](https://www.codacy.com/app/sfuhrm/logwebconfig?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sfuhrm/logwebconfig&amp;utm_campaign=Badge_Grade)
-[![Coverage Status](https://coveralls.io/repos/github/sfuhrm/logwebconfig/badge.svg)](https://coveralls.io/github/sfuhrm/logwebconfig) 
+[![Java CI with Maven](https://github.com/sfuhrm/logwebconfig/actions/workflows/maven-ref.yml/badge.svg)](https://github.com/sfuhrm/logwebconfig/actions/workflows/maven-ref.yml)
+[![Code Coverage](https://raw.githubusercontent.com/sfuhrm/logwebconfig/refs/heads/gh-pages/jacoco.svg)](https://github.com/sfuhrm/logwebconfig/actions/workflows/jacoco-badge-ref.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig) 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
