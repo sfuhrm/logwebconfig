@@ -49,7 +49,7 @@ following Apache Maven dependency:
 <dependency>
     <groupId>de.sfuhrm</groupId>
     <artifactId>logwebconfig</artifactId>
-    <version>0.8.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
