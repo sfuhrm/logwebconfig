@@ -7,7 +7,7 @@ Log Web Config
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
-A simple runtime REST-based configuration of the logging facility.
+A simple runtime REST-based embedded HTTP server for configuring the log levels of Log4j1 and Log4j2 loggers.
 You can query and modify the log levels of each and every logger inclusive the root logger with one HTTP PUT request.
 
 #### Target scenarios
