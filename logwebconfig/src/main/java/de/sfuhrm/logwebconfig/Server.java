@@ -160,7 +160,7 @@ final class Server extends NanoHTTPD {
         String logger = matcher.group(2);
 
         LogFrameworkBridge logFrameworkHandler =
-                getLogConfigurator(logFramework);
+                getLogFrameworkBridge(logFramework);
         Optional<LogFrameworkBridge.LoggerResource> resource =
                 logFrameworkHandler.findLoggerResource(logger);
         if (!resource.isPresent()) {
@@ -178,7 +178,7 @@ final class Server extends NanoHTTPD {
      * @return the logging framework specific configurator instance.
      * @throws ServerException if the logging framework was not found.
      * */
-    LogFrameworkBridge getLogConfigurator(
+    LogFrameworkBridge getLogFrameworkBridge(
             final String logFramework) throws ServerException {
         LogFrameworkBridge logFrameworkHandler;
         switch (logFramework) {

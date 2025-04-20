@@ -63,7 +63,7 @@ public class ServerTest {
     }
 
     private void installMocks() throws ServerException {
-        doReturn(configuratorMock).when(server).getLogConfigurator(Mockito.anyString());
+        doReturn(configuratorMock).when(server).getLogFrameworkBridge(Mockito.anyString());
     }
 
     @Test
@@ -152,6 +152,29 @@ public class ServerTest {
     public void getWithMalformedUri() {
         Response r = serviceTarget.path("/foofoobar//level").request().get();
         assertEquals(Response.Status.BAD_REQUEST, r.getStatusInfo().toEnum());
+    }
+
+    @Test
+    void getLogFrameworkBridgeWithLog4j1() throws IOException, ServerException {
+        Server server = new Server(null, 1234, false);
+        LogFrameworkBridge bridge = server.getLogFrameworkBridge("log4j1");
+        assertNotNull(bridge);
+        assertEquals(Log4J1Bridge.class, bridge.getClass());
+    }
+
+    @Test
+    void getLogFrameworkBridgeWithLog4j2() throws IOException, ServerException {
+        Server server = new Server(null, 1234, false);
+        LogFrameworkBridge bridge = server.getLogFrameworkBridge("log4j2");
+        assertNotNull(bridge);
+        assertEquals(Log4J2Bridge.class, bridge.getClass());
+    }
+
+    @Test
+    void getLogFrameworkBridgeWithUnknown() throws IOException {
+        Server server = new Server(null, 1234);
+        assertThrows(ServerException.class, () ->
+            server.getLogFrameworkBridge("frameworkunknown"));
     }
 
     @Test
