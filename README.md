@@ -3,10 +3,13 @@ Log Web Config
 [![Java CI with Maven](https://github.com/sfuhrm/logwebconfig/actions/workflows/maven-ref.yml/badge.svg)](https://github.com/sfuhrm/logwebconfig/actions/workflows/maven-ref.yml)
 [![Code Coverage](https://raw.githubusercontent.com/sfuhrm/logwebconfig/refs/heads/gh-pages/jacoco.svg)](https://github.com/sfuhrm/logwebconfig/actions/workflows/jacoco-badge-ref.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/logwebconfig) 
+[![ReleaseDate](https://img.shields.io/github/release-date/sfuhrm/logwebconfig)](https://github.com/sfuhrm/logwebconfig/releases)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
-A simple runtime REST-based configuration of the logging facility.
+A simple runtime REST-based embedded HTTP server for configuring the log levels of Log4j1 and Log4j2 loggers.
+You can embed the server with one line in your Java program and configure log levels in the runtime with simple
+`curl` commands to `localhost`.
 You can query and modify the log levels of each and every logger inclusive the root logger with one HTTP PUT request.
 
 #### Target scenarios
@@ -49,7 +52,7 @@ following Apache Maven dependency:
 <dependency>
     <groupId>de.sfuhrm</groupId>
     <artifactId>logwebconfig</artifactId>
-    <version>0.8.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -79,7 +82,7 @@ public class MyApp {
 Configuration of the server is done using Java system properties.
 By default the server listens on TCP/IP port 19293.
 
-The following properties are there for configuration:
+The following Java system properties (settable in your application invocation for example like `java -DLOGWEBCONFIG_PORT=12345 ...`) are there for configuration:
 
 * **LOGWEBCONFIG_PORT**: The TCP/IP port for the HTTP-server to listen to. Example value is 19293 which is also the default port.
 * **LOGWEBCONFIG_HOST**: The IP address to bind the listening socket to. Defaults to "127.0.0.1" which is only reachable from localhost.
