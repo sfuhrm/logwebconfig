@@ -20,10 +20,12 @@ abstract class LogFrameworkBridge {
     }
 
     /** Finds a log configuration resource with its resource name.
-     * @param loggerName the logger name. Usually this is the empty String for the
+     * @param loggerName the logger name. Usually this is the
+     *                 empty String for the
      *                 root logger and everything else being interpreted as a
      *                 Java fully qualified class name.
      * @return the found logger or {@code {@link Optional#empty()} if not found.
      * */
-    public abstract Optional<LoggerResource> findLoggerResource(String loggerName);
+    public abstract Optional<LoggerResource> findLoggerResource(
+            String loggerName);
 }

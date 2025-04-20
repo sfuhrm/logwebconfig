@@ -25,8 +25,10 @@ class Log4J1Bridge extends LogFrameworkBridge {
     }
 
     @Override
-    public Optional<LogFrameworkBridge.LoggerResource> findLoggerResource(final String loggerName) {
-        if (loggerName == null || loggerName.isEmpty() || "/".equals(loggerName)) {
+    public Optional<LogFrameworkBridge.LoggerResource> findLoggerResource(
+            final String loggerName) {
+        if (loggerName == null
+                || loggerName.isEmpty() || "/".equals(loggerName)) {
             return Optional.of(new RootLoggerResource());
         }
         return Optional.of(new LoggerResource(loggerName));
@@ -42,7 +44,8 @@ class Log4J1Bridge extends LogFrameworkBridge {
 
     /** Resource representing the root logger.
      * */
-    private class RootLoggerResource implements LogFrameworkBridge.LoggerResource {
+    private class RootLoggerResource
+            implements LogFrameworkBridge.LoggerResource {
         @Override
         public String get() {
             return getRootLogger().getLevel().toString();

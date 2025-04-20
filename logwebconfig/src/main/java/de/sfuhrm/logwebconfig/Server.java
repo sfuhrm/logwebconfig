@@ -9,7 +9,8 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** HTTP server for handling RESTy requests and passing them on to log4j2.
+/** HTTP server for handling RESTy requests and passing them on to
+ * log4j1 or log4j2.
  * */
 final class Server extends NanoHTTPD {
 
@@ -158,7 +159,8 @@ final class Server extends NanoHTTPD {
         String logFramework = matcher.group(1);
         String logger = matcher.group(2);
 
-        LogFrameworkBridge logFrameworkHandler = getLogConfigurator(logFramework);
+        LogFrameworkBridge logFrameworkHandler =
+                getLogConfigurator(logFramework);
         Optional<LogFrameworkBridge.LoggerResource> resource =
                 logFrameworkHandler.findLoggerResource(logger);
         if (!resource.isPresent()) {
@@ -223,7 +225,9 @@ final class Server extends NanoHTTPD {
                     e.getMessage());
         }
 
-        String levelString = new String(data, Charset.forName("ASCII"));
+        String levelString = new String(
+                data,
+                Charset.forName("ASCII"));
         try {
                 resource.set(levelString);
         } catch (IllegalArgumentException e) {
