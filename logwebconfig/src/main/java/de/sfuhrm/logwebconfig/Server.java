@@ -119,14 +119,9 @@ final class Server extends NanoHTTPD {
             LogFrameworkBridge.LoggerResource resource = getResource(session);
             switch (method) {
                 case GET:
-                    String level = resource.getLevel();
-                    return newFixedLengthResponse(
-                            Response.Status.OK,
-                            MIME_PLAINTEXT,
-                            level);
+                    return handleGetLevel(session, resource);
                 case PUT:
-                    configure(session, resource);
-                    break;
+                    return handleSetLevel(session, resource);
                 default:
                     throw new ServerException(
                             Response.Status.METHOD_NOT_ALLOWED,
@@ -135,10 +130,6 @@ final class Server extends NanoHTTPD {
         } catch (ServerException e) {
             return e.toResponse();
         }
-        return newFixedLengthResponse(
-                Response.Status.OK,
-                MIME_PLAINTEXT,
-                "");
     }
 
     /** Get the logger resource associated with the request.
@@ -196,13 +187,30 @@ final class Server extends NanoHTTPD {
         return logFrameworkHandler;
     }
 
-    /** Configures a logger based on the data in the request.
+    /** Gets the level of a logger based on the data in the request.
      * @param session the session to take the parameters from.
      * @param resource the log resource to manipulate.
+     * @return the nano http response to return.
      * @throws ServerException if the request is malformed.
      * */
-    private void configure(final IHTTPSession session,
-                           final LogFrameworkBridge.LoggerResource resource)
+    private Response handleGetLevel(final IHTTPSession session,
+                            final LogFrameworkBridge.LoggerResource resource) {
+        String level = resource.getLevel();
+        return newFixedLengthResponse(
+                Response.Status.OK,
+                MIME_PLAINTEXT,
+                level);
+    }
+
+
+    /** Sets the level of a logger based on the data in the request.
+     * @param session the session to take the parameters from.
+     * @param resource the log resource to manipulate.
+     * @return the nano http response to return.
+     * @throws ServerException if the request is malformed.
+     * */
+    private Response handleSetLevel(final IHTTPSession session,
+                            final LogFrameworkBridge.LoggerResource resource)
             throws ServerException {
         String lengthString = session.getHeaders().get("content-length");
         if (lengthString == null) {
@@ -229,7 +237,11 @@ final class Server extends NanoHTTPD {
                 data,
                 Charset.forName("ASCII"));
         try {
-                resource.setLevel(levelString);
+            resource.setLevel(levelString);
+            return newFixedLengthResponse(
+                    Response.Status.OK,
+                    MIME_PLAINTEXT,
+                    "");
         } catch (IllegalArgumentException e) {
             throw new ServerException(Response.Status.BAD_REQUEST,
                     e.getMessage());

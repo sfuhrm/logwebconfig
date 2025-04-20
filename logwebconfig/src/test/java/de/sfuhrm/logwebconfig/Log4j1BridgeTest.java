@@ -76,7 +76,7 @@ public class Log4j1BridgeTest {
             });
         Mockito.verify(rootLogger, Mockito.times(0)).setLevel(Mockito.any());
     }
-    
+
     @Test
     public void testSetLevelWithRootLogger() {
         Logger logger = Mockito.mock(Logger.class);
