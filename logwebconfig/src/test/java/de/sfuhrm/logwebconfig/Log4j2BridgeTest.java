@@ -4,38 +4,29 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.client.WebTarget;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Test for the {@link Log4j2Configurator} class.
+ * Test for the {@link Log4J2Bridge} class.
  * */
-public class Log4j2ConfiguratorTest {
+public class Log4j2BridgeTest {
 
     private MockedStatic<LogManager> mockedLogManager;
 
     private MockedStatic<Configurator> mockedConfigurator;
 
-    private Log4j2Configurator instance;
+    private Log4J2Bridge instance;
 
     @BeforeEach
     public void init() {
-        instance = new Log4j2Configurator();
+        instance = new Log4J2Bridge();
     }
 
     @BeforeEach
@@ -56,13 +47,13 @@ public class Log4j2ConfiguratorTest {
         Mockito.when(logger.getLevel()).thenReturn(Level.ALL);
         mockedLogManager.when(() -> LogManager.getLogger("foo.bar.Baz")).thenReturn(logger);
 
-        String level = instance.findResource("foo.bar.Baz").get().read();
+        String level = instance.findLoggerResource("foo.bar.Baz").get().get();
         assertEquals("ALL", level);
     }
 
     @Test
     public void updateLogger() {
-        instance.findResource("foo.bar.Baz").get().update("DEBUG");
+        instance.findLoggerResource("foo.bar.Baz").get().set("DEBUG");
         mockedConfigurator.verify(() -> Configurator.setLevel("foo.bar.Baz", Level.DEBUG));
     }
 
@@ -72,7 +63,7 @@ public class Log4j2ConfiguratorTest {
         Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
         mockedLogManager.when(LogManager::getRootLogger).thenReturn(rootLogger);
 
-        String level = instance.findResource("").get().read();
+        String level = instance.findLoggerResource("").get().get();
         assertEquals("ALL", level);
     }
 
@@ -83,13 +74,13 @@ public class Log4j2ConfiguratorTest {
             Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
             mockedLogManager.when(LogManager::getRootLogger).thenReturn(rootLogger);
 
-            instance.findResource("").get().update("FOOBAR");
+            instance.findLoggerResource("").get().set("FOOBAR");
         });
     }
 
     @Test
     public void updateRootLogger() {
-        instance.findResource("").get().update("DEBUG");
+        instance.findLoggerResource("").get().set("DEBUG");
         mockedConfigurator.verify(() -> Configurator.setRootLevel(Level.DEBUG));
     }
 }

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 /** Configuration class for log4j1.
  * */
-class Log4j1Configurator extends LogConfigurator {
+class Log4J1Bridge extends LogFrameworkBridge {
     /**
      * Converts a level to a Log4j level object.
      * @param levelString the level String to recognize.
@@ -25,11 +25,11 @@ class Log4j1Configurator extends LogConfigurator {
     }
 
     @Override
-    public Optional<Resource> findResource(final String resource) {
-        if (resource == null || resource.isEmpty() || "/".equals(resource)) {
+    public Optional<LogFrameworkBridge.LoggerResource> findLoggerResource(final String loggerName) {
+        if (loggerName == null || loggerName.isEmpty() || "/".equals(loggerName)) {
             return Optional.of(new RootLoggerResource());
         }
-        return Optional.of(new LoggerResource(resource));
+        return Optional.of(new LoggerResource(loggerName));
     }
 
     /** Dynamic method for {@link LogManager#getRootLogger()}
@@ -42,14 +42,14 @@ class Log4j1Configurator extends LogConfigurator {
 
     /** Resource representing the root logger.
      * */
-    private class RootLoggerResource implements Resource {
+    private class RootLoggerResource implements LogFrameworkBridge.LoggerResource {
         @Override
-        public String read() {
+        public String get() {
             return getRootLogger().getLevel().toString();
         }
 
         @Override
-        public void update(final String newLevel) {
+        public void set(final String newLevel) {
             getRootLogger().setLevel(parseLevel(newLevel));
         }
     }
@@ -66,7 +66,7 @@ class Log4j1Configurator extends LogConfigurator {
 
     /** Resource representing a named logger.
      * */
-    private class LoggerResource implements Resource {
+    private class LoggerResource implements LogFrameworkBridge.LoggerResource {
         /** The name of the logger to configure. */
         private String logger;
 
@@ -78,12 +78,12 @@ class Log4j1Configurator extends LogConfigurator {
         }
 
         @Override
-        public String read() {
+        public String get() {
             return getLogger(logger).getLevel().toString();
         }
 
         @Override
-        public void update(final String newLevel) {
+        public void set(final String newLevel) {
             getLogger(logger).setLevel(parseLevel(newLevel));
         }
     }

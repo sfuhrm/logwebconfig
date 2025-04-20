@@ -115,10 +115,10 @@ final class Server extends NanoHTTPD {
         try {
             checkAuthentication(session);
             Method method = session.getMethod();
-            LogConfigurator.Resource resource = getResource(session);
+            LogFrameworkBridge.LoggerResource resource = getResource(session);
             switch (method) {
                 case GET:
-                    String level = resource.read();
+                    String level = resource.get();
                     return newFixedLengthResponse(
                             Response.Status.OK,
                             MIME_PLAINTEXT,
@@ -145,7 +145,7 @@ final class Server extends NanoHTTPD {
      * @return the logger resource associated with the request.
      * @throws ServerException if the logger was not found.
      *  */
-    private LogConfigurator.Resource getResource(
+    private LogFrameworkBridge.LoggerResource getResource(
             final IHTTPSession session) throws ServerException {
         Pattern pattern = Pattern.compile("/*(log4j1|log4j2)/([^/]*)/level");
         Matcher matcher = pattern.matcher(session.getUri());
@@ -158,9 +158,9 @@ final class Server extends NanoHTTPD {
         String logFramework = matcher.group(1);
         String logger = matcher.group(2);
 
-        LogConfigurator logConfigurator = getLogConfigurator(logFramework);
-        Optional<LogConfigurator.Resource> resource =
-                logConfigurator.findResource(logger);
+        LogFrameworkBridge logFrameworkHandler = getLogConfigurator(logFramework);
+        Optional<LogFrameworkBridge.LoggerResource> resource =
+                logFrameworkHandler.findLoggerResource(logger);
         if (!resource.isPresent()) {
             throw new ServerException(Response.Status.NOT_FOUND,
                     "Logger not found: " + logger + "'");
@@ -176,22 +176,22 @@ final class Server extends NanoHTTPD {
      * @return the logging framework specific configurator instance.
      * @throws ServerException if the logging framework was not found.
      * */
-    LogConfigurator getLogConfigurator(
+    LogFrameworkBridge getLogConfigurator(
             final String logFramework) throws ServerException {
-        LogConfigurator logConfigurator;
+        LogFrameworkBridge logFrameworkHandler;
         switch (logFramework) {
             case "log4j1":
-                logConfigurator = new Log4j1Configurator();
+                logFrameworkHandler = new Log4J1Bridge();
                 break;
             case "log4j2":
-                logConfigurator = new Log4j2Configurator();
+                logFrameworkHandler = new Log4J2Bridge();
                 break;
             default:
                 throw new ServerException(
                         Response.Status.BAD_REQUEST,
                         "Unknown framework " + logFramework);
         }
-        return logConfigurator;
+        return logFrameworkHandler;
     }
 
     /** Configures a logger based on the data in the request.
@@ -200,7 +200,7 @@ final class Server extends NanoHTTPD {
      * @throws ServerException if the request is malformed.
      * */
     private void configure(final IHTTPSession session,
-                           final LogConfigurator.Resource resource)
+                           final LogFrameworkBridge.LoggerResource resource)
             throws ServerException {
         String lengthString = session.getHeaders().get("content-length");
         if (lengthString == null) {
@@ -225,7 +225,7 @@ final class Server extends NanoHTTPD {
 
         String levelString = new String(data, Charset.forName("ASCII"));
         try {
-                resource.update(levelString);
+                resource.set(levelString);
         } catch (IllegalArgumentException e) {
             throw new ServerException(Response.Status.BAD_REQUEST,
                     e.getMessage());

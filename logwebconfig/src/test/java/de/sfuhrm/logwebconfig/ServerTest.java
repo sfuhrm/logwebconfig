@@ -36,7 +36,7 @@ public class ServerTest {
     private int port = 9999;
 
     @Spy
-    private Log4j2Configurator configuratorMock;
+    private Log4J2Bridge configuratorMock;
 
     @Mock
     private Logger loggerMock;
@@ -189,7 +189,7 @@ public class ServerTest {
 
         installMocks();
         Mockito.doNothing().when(configuratorMock).setLevel(Mockito.anyString(), Mockito.any());
-        Mockito.when(configuratorMock.findResource(Mockito.anyString())).thenCallRealMethod();
+        Mockito.when(configuratorMock.findLoggerResource(Mockito.anyString())).thenCallRealMethod();
 
         Response r = serviceTarget
                 .path("log4j2").path(logger).path("level")
