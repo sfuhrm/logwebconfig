@@ -47,12 +47,12 @@ class Log4J1Bridge extends LogFrameworkBridge {
     private class RootLoggerResource
             implements LogFrameworkBridge.LoggerResource {
         @Override
-        public String get() {
+        public String getLevel() {
             return getRootLogger().getLevel().toString();
         }
 
         @Override
-        public void set(final String newLevel) {
+        public void setLevel(final String newLevel) {
             getRootLogger().setLevel(parseLevel(newLevel));
         }
     }
@@ -81,12 +81,12 @@ class Log4J1Bridge extends LogFrameworkBridge {
         }
 
         @Override
-        public String get() {
+        public String getLevel() {
             return getLogger(logger).getLevel().toString();
         }
 
         @Override
-        public void set(final String newLevel) {
+        public void setLevel(final String newLevel) {
             getLogger(logger).setLevel(parseLevel(newLevel));
         }
     }

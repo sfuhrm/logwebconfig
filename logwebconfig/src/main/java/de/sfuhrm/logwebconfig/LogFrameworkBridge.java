@@ -10,13 +10,13 @@ abstract class LogFrameworkBridge {
         /** Read the current level of the logger.
          * @return the level name of the logger or {@code null} if not known.
          *  */
-        String get();
+        String getLevel();
 
         /** Update the current level of the logger.
          * @param newLevel the new level to set.
          * @throws IllegalArgumentException if the level is not acceptable.
          *  */
-        void set(String newLevel);
+        void setLevel(String newLevel);
     }
 
     /** Finds a log configuration resource with its resource name.

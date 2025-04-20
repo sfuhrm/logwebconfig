@@ -42,7 +42,7 @@ public class Log4j1BridgeTest {
         Mockito.when(logger.getLevel()).thenReturn(Level.ALL);
         mockedLogManager.when(() -> LogManager.getLogger("foo.bar.Baz")).thenReturn(logger);
 
-        String level = instance.findLoggerResource("foo.bar.Baz").get().get();
+        String level = instance.findLoggerResource("foo.bar.Baz").get().getLevel();
         assertEquals("ALL", level);
     }
 
@@ -51,7 +51,7 @@ public class Log4j1BridgeTest {
         Logger logger = Mockito.mock(Logger.class);
         mockedLogManager.when(() -> LogManager.getLogger("foo.bar.Baz")).thenReturn(logger);
 
-        instance.findLoggerResource("foo.bar.Baz").get().set("DEBUG");
+        instance.findLoggerResource("foo.bar.Baz").get().setLevel("DEBUG");
 
         Mockito.verify(logger).setLevel(Level.DEBUG);
     }
@@ -62,7 +62,7 @@ public class Log4j1BridgeTest {
         Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
         mockedLogManager.when(LogManager::getRootLogger).thenReturn(rootLogger);
 
-        String level = instance.findLoggerResource("").get().get();
+        String level = instance.findLoggerResource("").get().getLevel();
         assertEquals("ALL", level);
     }
 
@@ -73,7 +73,7 @@ public class Log4j1BridgeTest {
             Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
             mockedLogManager.when(LogManager::getRootLogger).thenReturn(rootLogger);
 
-            instance.findLoggerResource("").get().set("FOOBAR");
+            instance.findLoggerResource("").get().setLevel("FOOBAR");
         });
     }
 
@@ -83,7 +83,7 @@ public class Log4j1BridgeTest {
         Mockito.when(logger.getLevel()).thenReturn(Level.ALL);
         mockedLogManager.when(LogManager::getRootLogger).thenReturn(logger);
 
-        instance.findLoggerResource("").get().set("DEBUG");
+        instance.findLoggerResource("").get().setLevel("DEBUG");
 
         Mockito.verify(logger).setLevel(Level.DEBUG);
     }

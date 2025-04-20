@@ -119,7 +119,7 @@ final class Server extends NanoHTTPD {
             LogFrameworkBridge.LoggerResource resource = getResource(session);
             switch (method) {
                 case GET:
-                    String level = resource.get();
+                    String level = resource.getLevel();
                     return newFixedLengthResponse(
                             Response.Status.OK,
                             MIME_PLAINTEXT,
@@ -229,7 +229,7 @@ final class Server extends NanoHTTPD {
                 data,
                 Charset.forName("ASCII"));
         try {
-                resource.set(levelString);
+                resource.setLevel(levelString);
         } catch (IllegalArgumentException e) {
             throw new ServerException(Response.Status.BAD_REQUEST,
                     e.getMessage());
