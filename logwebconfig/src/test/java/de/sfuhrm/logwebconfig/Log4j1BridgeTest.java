@@ -37,7 +37,7 @@ public class Log4j1BridgeTest {
     }
 
     @Test
-    public void readLogger() {
+    public void testGetLevel() {
         Logger logger = Mockito.mock(Logger.class);
         Mockito.when(logger.getLevel()).thenReturn(Level.ALL);
         mockedLogManager.when(() -> LogManager.getLogger("foo.bar.Baz")).thenReturn(logger);
@@ -47,7 +47,7 @@ public class Log4j1BridgeTest {
     }
 
     @Test
-    public void updateLogger() {
+    public void testSetLevel() {
         Logger logger = Mockito.mock(Logger.class);
         mockedLogManager.when(() -> LogManager.getLogger("foo.bar.Baz")).thenReturn(logger);
 
@@ -57,7 +57,7 @@ public class Log4j1BridgeTest {
     }
 
     @Test
-    public void readRootLogger() {
+    public void testGetLevelWithRootLogger() {
         Logger rootLogger = Mockito.mock(Logger.class);
         Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
         mockedLogManager.when(LogManager::getRootLogger).thenReturn(rootLogger);
@@ -67,18 +67,18 @@ public class Log4j1BridgeTest {
     }
 
     @Test
-    public void updateRootLoggerWithWrongLevel() {
+    public void testSetLevelWithWrongLevel() {
+        Logger rootLogger = Mockito.mock(Logger.class);
         assertThrows(IllegalArgumentException.class, () -> {
-            Logger rootLogger = Mockito.mock(Logger.class);
-            Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
-            mockedLogManager.when(LogManager::getRootLogger).thenReturn(rootLogger);
-
-            instance.findLoggerResource("").get().setLevel("FOOBAR");
-        });
+                Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
+                mockedLogManager.when(LogManager::getRootLogger).thenReturn(rootLogger);
+                instance.findLoggerResource("").get().setLevel("FOOBAR");
+            });
+        Mockito.verify(rootLogger, Mockito.times(0)).setLevel(Mockito.any());
     }
-
+    
     @Test
-    public void updateRootLogger() {
+    public void testSetLevelWithRootLogger() {
         Logger logger = Mockito.mock(Logger.class);
         Mockito.when(logger.getLevel()).thenReturn(Level.ALL);
         mockedLogManager.when(LogManager::getRootLogger).thenReturn(logger);

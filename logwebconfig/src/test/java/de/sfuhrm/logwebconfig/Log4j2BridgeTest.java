@@ -42,7 +42,7 @@ public class Log4j2BridgeTest {
     }
 
     @Test
-    public void readLogger() {
+    public void testGetLevelWithNamedLogger() {
         Logger logger = Mockito.mock(Logger.class);
         Mockito.when(logger.getLevel()).thenReturn(Level.ALL);
         mockedLogManager.when(() -> LogManager.getLogger("foo.bar.Baz")).thenReturn(logger);
@@ -52,13 +52,13 @@ public class Log4j2BridgeTest {
     }
 
     @Test
-    public void updateLogger() {
+    public void testSetLevelWithNamedLogger() {
         instance.findLoggerResource("foo.bar.Baz").get().setLevel("DEBUG");
         mockedConfigurator.verify(() -> Configurator.setLevel("foo.bar.Baz", Level.DEBUG));
     }
 
     @Test
-    public void readRootLogger() {
+    public void testGetLevenWithRootLogger() {
         Logger rootLogger = Mockito.mock(Logger.class);
         Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
         mockedLogManager.when(LogManager::getRootLogger).thenReturn(rootLogger);
@@ -68,7 +68,7 @@ public class Log4j2BridgeTest {
     }
 
     @Test
-    public void updateRootLoggerWithWrongLevel() {
+    public void testSetLevelWithWrongLevelName() {
         assertThrows(IllegalArgumentException.class, () -> {
             Logger rootLogger = Mockito.mock(Logger.class);
             Mockito.when(rootLogger.getLevel()).thenReturn(Level.ALL);
@@ -79,7 +79,7 @@ public class Log4j2BridgeTest {
     }
 
     @Test
-    public void updateRootLogger() {
+    public void setLevelWithRootLogger() {
         instance.findLoggerResource("").get().setLevel("DEBUG");
         mockedConfigurator.verify(() -> Configurator.setRootLevel(Level.DEBUG));
     }
