@@ -4,14 +4,14 @@
     <groupId>de.sfuhrm</groupId>
     <artifactId>logwebconfig-parent</artifactId>
     <name>Log Web Config Parent</name>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <description>Log Web Config Parent POM</description>
     <url>https://github.com/sfuhrm/logwebconfig</url>
     <scm>
         <url>https://github.com/sfuhrm/logwebconfig</url>
         <connection>scm:git:git@github.com:sfuhrm/logwebconfig.git</connection>
         <developerConnection>scm:git:git@github.com:sfuhrm/logwebconfig.git</developerConnection>
-      <tag>v0.0.2</tag>
+      <tag>v1.0.1</tag>
   </scm>
     <licenses>
         <license>
